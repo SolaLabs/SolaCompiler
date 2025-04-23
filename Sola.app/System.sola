@@ -1,0 +1,193 @@
+// TODO: Multi-line comments.
+space Diagnostic
+ object Debug
+  path: "Logs/debug.log"
+  action Initialize()
+   debug.write("Diagnostic debug initialized!")
+   system.file.create(path)
+  end
+  action Log(message)
+   system.file.append(path, message)
+   debug.write(message)
+  end
+  Initialize()
+ end
+ object Console
+  path: "Logs/console.log"
+  action Initialize()
+   console.write("Diagnostic console initialized!")
+   system.file.create(path)
+  end
+  action Write(message)
+   message: system.date.format.short.time() "System:" message
+   system.file.append(path, message)
+   console.write(message)
+  end
+  Initialize()
+ end
+end
+
+space Objects
+ object Text
+  action Normalize(text)
+   return text.case.normal(text)
+  end
+ end
+end
+
+space Development
+ use Console: Diagnostic.Console
+ use Text: Objects.Text
+ object Testing
+  action Start(release)
+   Console.Write("Initializing" release "testing sequences...")
+   messages: {"This is the first test!", "This is the second test!", "This is the third test!"}
+   for (tests: 1,tests less? 3,1)
+    Console.Write(tests)
+    if (tests?) 
+     Console.Write(messages[tests])
+     Console.Write(if(tests == 2: "There have been two tests!" or? (3 - tests) "tests remaining!"))
+     switch (tests)
+      case 1
+       Console.Write("Here are some fruit!")
+       words: {"apple","banana","orange"}
+       foreach (word, words)
+        if (word is? "orange") 
+         skip
+        end
+        Console.Write(word)
+       end
+      end
+      case 2
+       repeat(i:0,5)
+        Console.Write(i)
+        if (i == 2)
+         break
+        end
+       end
+      end
+      case 3
+       count: 0
+       looping: true
+       while (looping)
+        count: count + 1
+        if (count == 1)
+         skip
+        end
+        else (count == 3)
+         looping: false
+         break
+        end
+        Console.Write("This a loop test!")
+       end
+      end
+     end
+    end
+   end
+   Console.Write(Text.Normalize(release) "testing sequences completed!")
+  end
+ end
+end
+
+space Interface
+ use Console: Diagnostic.Console
+ use Debug: Diagnostic.Debug
+ use Testing: Development.Testing
+ object Main
+  // Properties
+  release: "alpha"
+  version: 1.0.0.0 // major.minor.build.patch
+  message: "Welcome to Sola!"
+  definition: "Structured Object Language Application"
+  action Initialize()
+   Welcome()
+   Load()
+   Test()
+   Run()
+  end
+  // Actions
+  action Command(input)
+   command: input
+   subcommand: ""
+   if (check.contains(command, "."))
+    data: text.split(command, ".")
+    subcommand: data[2]
+    command: data[1]
+   end
+   switch (command)
+    case "system"
+     switch (subcommand)
+      case "command"
+       Console.Write("Please input a command...")
+       response: await.input()
+       system.command(response)
+      end
+      case "exit"
+       Console.Write("Are you sure you would like to exit?")
+       response: await.input()
+       switch (text.case.lower(response))
+        case "yes"
+         Console.Write("Suspending program...")
+         system.exit
+        end
+        default
+         Console.Write("Alright")
+        end
+       end
+      end
+      case "recompile"
+       Console.Write("Are you sure you would like to recompile?")
+       response: await.input()
+       switch (text.case.lower(response))
+        case "yes"
+         Console.Write("Recompiling program...")
+         system.recompile
+        end
+        default
+         Console.Write("Alright")
+        end
+       end
+      end
+      case "suspend"
+       Console.Write("Are you sure you would like to suspend?")
+       response: await.input()
+       switch (text.case.lower(response))
+        case "yes"
+         Console.Write("Suspending program...")
+         system.suspend
+        end
+        default
+         Console.Write("Alright")
+        end
+       end
+      end
+     end
+    end
+   end
+  end
+  action Load()
+   system.directory.create("Logs")
+  end
+  action Run()
+   Console.Write("Awaiting input!)"
+   input: await.input()
+   Respond(input)
+  end
+  action Respond(input)
+   Command(input)
+   Run()
+  end
+  action Test()
+   if (release == "alpha")
+    Testing.Start(release)
+   end
+  end
+  action Welcome()
+   Console.Write(message)
+   Console.Write(definition)
+   Console.Write("Version:" version)
+   Console.Write("Release:" text.case.normal(release))
+  end
+  Initialize()
+ end
+end
