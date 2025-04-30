@@ -4,7 +4,9 @@ space Diagnostic
   path: "Logs/debug.log"
   action Initialize()
    debug.write("Diagnostic debug initialized!")
-   system.file.create(path)
+   if (!system.file.exists(path))
+    system.file.create(path)
+   end
   end
   action Log(message)
    system.file.append(path, message)
@@ -16,10 +18,12 @@ space Diagnostic
   path: "Logs/console.log"
   action Initialize()
    console.write("Diagnostic console initialized!")
-   system.file.create(path)
+   if (!system.file.exists(path))
+    system.file.create(path)
+    end
   end
   action Write(message)
-   message: system.date.format.short.time() "System:" message
+   message: system.date.short.time() " System: " message
    system.file.append(path, message)
    console.write(message)
   end
@@ -30,7 +34,7 @@ end
 space Objects
  object Text
   action Normalize(text)
-   return text.case.normal(text)
+   return text.case.normal()
   end
  end
 end
@@ -40,29 +44,31 @@ space Development
  use Text: Objects.Text
  object Testing
   action Start(release)
-   Console.Write("Initializing" release "testing sequences...")
+   Console.Write("Initializing " release " testing sequences...")
    messages: {"This is the first test!", "This is the second test!", "This is the third test!"}
-   for (tests: 1,tests less? 3,1)
+   for (tests: 1, tests less? 3, 1)
     Console.Write(tests)
     if (tests?) 
      Console.Write(messages[tests])
-     Console.Write(if(tests == 2: "There have been two tests!" or? (3 - tests) "tests remaining!"))
+     Console.Write(if(tests is? 2: "There have been two tests!" or? (3 - tests) " tests remaining!"))
      switch (tests)
       case 1
        Console.Write("Here are some fruit!")
        words: {"apple","banana","orange"}
        foreach (word, words)
-        if (word is? "orange") 
+        if (word is! "orange") 
          skip
         end
         Console.Write(word)
        end
       end
       case 2
-       repeat(i:0,5)
-        Console.Write(i)
-        if (i == 2)
+       repeat(i: 0, 5)
+        if (i more? 2)
          break
+        end
+        else
+         Console.Write(i)
         end
        end
       end
@@ -84,7 +90,7 @@ space Development
      end
     end
    end
-   Console.Write(Text.Normalize(release) "testing sequences completed!")
+   Console.Write(Text.Normalize(release) " testing sequences completed!")
   end
  end
 end
@@ -96,7 +102,11 @@ space Interface
  object Main
   // Properties
   release: "alpha"
-  version: 1.0.0.0 // major.minor.build.patch
+  major: 1
+  minor: 0
+  build: 0
+  patch: 1
+  version: major "." minor "." build "." patch
   message: "Welcome to Sola!"
   definition: "Structured Object Language Application"
   action Initialize()
@@ -107,10 +117,17 @@ space Interface
   end
   // Actions
   action Command(input)
+   if (input as? void)
+    Debug.Log("Input is void!")
+    return
+   end
+   else
+    Debug.Log("Input is not void!")
+   end
    command: input
    subcommand: ""
-   if (check.contains(command, "."))
-    data: text.split(command, ".")
+   if (command.contains("."))
+    data: command.split(".")
     subcommand: data[2]
     command: data[1]
    end
@@ -125,7 +142,7 @@ space Interface
       case "exit"
        Console.Write("Are you sure you would like to exit?")
        response: await.input()
-       switch (text.case.lower(response))
+       switch (response.case.lower())
         case "yes"
          Console.Write("Suspending program...")
          system.exit
@@ -138,7 +155,7 @@ space Interface
       case "recompile"
        Console.Write("Are you sure you would like to recompile?")
        response: await.input()
-       switch (text.case.lower(response))
+       switch (response.case.lower())
         case "yes"
          Console.Write("Recompiling program...")
          system.recompile
@@ -151,7 +168,7 @@ space Interface
       case "suspend"
        Console.Write("Are you sure you would like to suspend?")
        response: await.input()
-       switch (text.case.lower(response))
+       switch (response.case.lower())
         case "yes"
          Console.Write("Suspending program...")
          system.suspend
@@ -161,7 +178,13 @@ space Interface
         end
        end
       end
+      default
+       Console.Write("The command 'system." subcommand "' is not supported!")
+      end
      end
+    end
+    default
+     Console.Write("Unrecognized command '" command "'!")
     end
    end
   end
@@ -169,7 +192,7 @@ space Interface
    system.directory.create("Logs")
   end
   action Run()
-   Console.Write("Awaiting input!)"
+   Console.Write("Awaiting input!")
    input: await.input()
    Respond(input)
   end
@@ -178,15 +201,15 @@ space Interface
    Run()
   end
   action Test()
-   if (release == "alpha")
+   if (release as? "alpha")
     Testing.Start(release)
    end
   end
   action Welcome()
    Console.Write(message)
    Console.Write(definition)
-   Console.Write("Version:" version)
-   Console.Write("Release:" text.case.normal(release))
+   Console.Write("Version: " version)
+   Console.Write("Release: " release.case.normal())
   end
   Initialize()
  end
