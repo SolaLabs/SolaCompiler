@@ -1,0 +1,40 @@
+require: "System/Objects.sola"
+require: "System/IO.sola"
+
+space Diagnostics
+ use Text: Objects.Text
+ use File: IO.File
+ object Debug
+  logs: "Logs/debug.log"
+  warnings: "Logs/warnings.log"
+  action Initialize()
+   if (task.all(File.Create(logs),File.Create(warnings)))
+    debug.write("Diagnostic debug initialized!")
+   end
+  end
+  action Log(message)
+   message: Text.Label("System", message, false)
+   system.file.append(logs, message)
+   debug.write(message)
+  end
+  action Warn(message)
+   system.file.append(warnings, message)
+   debug.warn(message)
+  end
+  Initialize()
+ end
+ object Console
+  path: "Logs/console.log"
+  action Initialize()
+   if (File.Create(path))
+    console.write("Diagnostic console initialized!")
+   end
+  end
+  action Write(message)
+   message: Text.Label("System", message)
+   system.file.append(path, message)
+   console.write(message)
+  end
+  Initialize()
+ end
+end

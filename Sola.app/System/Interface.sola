@@ -1,0 +1,125 @@
+require: "System/Development.sola"
+require: "System/Diagnostics.sola"
+
+space Interface
+ use Console: Diagnostics.Console
+ use Debug: Diagnostics.Debug
+ use Testing: Development.Testing
+ object Main
+  // Properties
+  wait: false
+  major: 1
+  minor: 0
+  build: 0
+  revision: 2
+  release: "alpha"
+  version: major "." minor "." build "." revision
+  message: "Welcome to Sola!"
+  definition: "Structured Object Language Application"
+  action Initialize()
+   Welcome()
+   Load()
+   Test()
+   Run()
+  end
+  // Actions
+  action Command(input)
+   if (input as? void)
+    Debug.Log("Input is void!")
+    return
+   end
+   else
+    Debug.Log("Input is not void! - '" command "'")
+   end
+   command: input
+   subcommand: ""
+   if (command.contains("."))
+    data: command.split(".")
+    subcommand: data[2]
+    command: data[1]
+   end
+   switch (command)
+    case "system"
+     switch (subcommand)
+      case "command"
+       Console.Write("Please input a command...")
+       response: task.input()
+       await.try(response)
+      end
+      case "exit"
+       Console.Write("Are you sure you would like to exit?")
+       response: task.input()
+       switch (response.case.lower())
+        case "yes"
+         Console.Write("Suspending program...")
+         system.exit
+        end
+        default
+         Console.Write("Alright")
+        end
+       end
+      end
+      case "recompile"
+       Console.Write("Are you sure you would like to recompile?")
+       response: task.input()
+       switch (response.case.lower())
+        case "yes"
+         Console.Write("Recompiling program...")
+         system.recompile
+        end
+        default
+         Console.Write("Alright")
+        end
+       end
+      end
+      case "suspend"
+       Console.Write("Are you sure you would like to suspend?")
+       response: task.input()
+       switch (response.case.lower())
+        case "yes"
+         Console.Write("Suspending program...")
+         system.suspend
+        end
+        default
+         Console.Write("Alright")
+        end
+       end
+      end
+      default
+       Console.Write("The command 'system." subcommand "' is not supported!")
+      end
+     end
+    end
+    default
+     Console.Write("Unrecognized command '" command "'!")
+    end
+   end
+  end
+  action Load()
+   system.directory.create("Logs")
+  end
+  action Run()
+   Console.Write("Awaiting input!")
+   input: task.input()
+   Respond(input)
+  end
+  action Respond(input)
+   if (!wait)
+    Command(input)
+    Run()
+   end
+  end
+  action Test()
+   if (release as? "alpha")
+    Testing.Start(release)
+   end
+  end
+  action Welcome()
+   Console.Write(message)
+   Console.Write(definition)
+   Console.Write("Version: " version)
+   Console.Write("Release: " release.case.normal())
+  end
+  Initialize()
+ end
+end

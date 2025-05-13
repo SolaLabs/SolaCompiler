@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v9.0": {
-      "Sola/1.0.0.1": {
+      "Sola/1.0.0.2": {
         "dependencies": {
           "Avalonia": "11.2.1",
           "Avalonia.Desktop": "11.2.1",
@@ -392,7 +392,7 @@
     }
   },
   "libraries": {
-    "Sola/1.0.0.1": {
+    "Sola/1.0.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

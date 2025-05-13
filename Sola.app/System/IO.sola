@@ -1,0 +1,7 @@
+space IO
+ object File
+  action Create(path)
+   return if(!system.file.exists(path): system.file.create(path) else? true)
+  end
+ end
+end

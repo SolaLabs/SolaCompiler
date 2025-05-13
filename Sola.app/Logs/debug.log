@@ -1,0 +1,25 @@
+System: Initializing alpha testing sequences...
+System: This is a test of the 'for' statement.
+System: This is the first test!
+System: There are 4 tests remaining!
+System: This is a test of the 'foreach' statement...
+System: This is the second test!
+System: There are 3 tests remaining!
+System: This is a test of the 'repeat' statement....
+System: This is the third test!
+System: There have been 3 tests!
+System: This is a test of the 'while' statement....
+System: Skipping a cycle!
+System: Continuing cycles!
+System: 2 cycle(s)!
+System: 3 cycle(s)!
+System: 4 cycle(s)!
+System: Breaking the loop!
+System: This is the fourth test!
+System: There have been 4 tests!
+System: This is a test of the 'try' statement....
+System: Attempting default.
+System: Try test completed!
+System: There have been 5 tests!
+System: This is the final test!
+System: Alpha testing sequences completed!

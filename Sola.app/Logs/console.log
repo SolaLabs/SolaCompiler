@@ -1,0 +1,15 @@
+11:20 AM System: Welcome to Sola!
+11:20 AM System: Structured Object Language Application
+11:20 AM System: Version: 1.0.0.2
+11:20 AM System: Release: Alpha
+11:20 AM System: What is your favorite color?
+11:20 AM System: { red, orange, yellow, green, blue, indigo, violet }
+11:20 AM System: Great, your favorite color is blue!
+11:20 AM System: Pick a number between 1 and 10!
+11:20 AM System: Okay, let's count to 5!
+11:20 AM System: Count is 1!
+11:20 AM System: Count is 2!
+11:20 AM System: Count is 3!
+11:20 AM System: Count is 4!
+11:20 AM System: Count is 5!
+11:20 AM System: Awaiting input!
