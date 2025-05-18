@@ -1,0 +1,11 @@
+/* 
+ Sea (Sola Embedded Annotation) Version 1.0.0.0
+ Description: A Sola project is a collection of source files that act as a whole system.
+ TODO: Implement comment-based documentation.
+*/
+
+require: "System/IO.sola"
+require: "System/Objects.sola"
+require: "System/Diagnostics.sola"
+require: "System/Development.sola"
+require: "System/Interface.sola"

@@ -1,0 +1,12 @@
+space Objects
+ object Object
+ end
+ object Text : Object
+  action Normalize(text)
+   return text.case.normal()
+  end
+  action Label(source, message, time: true)
+   return (if(time: system.date.short.time()) " " source ": " message).trim()
+  end
+ end
+end

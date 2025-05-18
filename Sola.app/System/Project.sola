@@ -1,8 +1,0 @@
-// TODO: Test multi-line comments.
-// TODO: Implement comment-based documentation.
-
-require: "System/IO.sola"
-require: "System/Objects.sola"
-require: "System/Diagnostics.sola"
-require: "System/Development.sola"
-require: "System/Interface.sola"

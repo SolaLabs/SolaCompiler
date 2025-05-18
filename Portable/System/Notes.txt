@@ -1,0 +1,76 @@
+Property Shortcuts
+
+let total, _total: 5
+ get
+  return _total
+ end
+ set
+  if (value > 0)
+   _total: value
+  end
+ end
+end
+
+let total, _total: 5
+ get(_total)
+ set
+  if (value > 0)
+   _total: value
+  end
+ end
+end
+
+let total, _total: 5
+ get(_total)
+ set(_total: if(value > 0: value else? _total)
+end
+
+let total, _total: 5, get(_total), set(_total: if(value > 0: value else? _total)
+
+// Loops
+
+// X is each value in 1 to 10.
+loop (x, 1 to? 10)
+ console.write(x)
+end
+
+// Writes x if x is greater than or equals to 1 and less than or equals to 10.
+for (x: 1, x more| 1 and! x less| 10, 1)
+ console.write(x)
+end
+
+// Automatically increments x + 1. Therefore, the first time x is written, the value equals 1.
+repeat (x, 10)
+ console.write(x)
+end
+
+// Writes ever value in the array.
+foreach (x, {1,2,3,4,5,6,7,8,9,10})
+ console.write(x)
+end
+
+
+// X is each value * 2 in 1 to 5.
+loop (x, 1 to? 5, * 2)
+ console.write(x)
+end
+
+// Writes x if x is greater than or equals to 1 and less than or equals to 10. X is increment by 2.
+for (x: 2, x less| 10, 2)
+ console.write(x)
+end
+
+// Automatically increments x + 1. Repeated 5 times, where x * 2 is printed.
+repeat (x, 5)
+ console.write(x * 2)
+end
+
+// Writes ever value in the array multiplied by 2.
+foreach (x, {1,2,3,4,5}) 
+ console.write(x * 2)
+end
+
+
+// Lambda
+
+label: Console.Write("Hi!")

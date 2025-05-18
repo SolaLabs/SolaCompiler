@@ -1,0 +1,11 @@
+/* 
+ An example execution point for running standalone applications.
+ This script uses Salt (Sola Application Language Translator) to 
+ automate the process of deploying a Sola project.
+*/
+sea: false // Disables Sola Embedded Annotation.
+console: false // Hides the console.
+console.developer: true // Disables developer mode.
+log.build(Running System Project...) // Stored log only.
+execute(System/Window.sola) // Project file. Main entry point for developer mode.
+salt: false // Disables further Salt execution.

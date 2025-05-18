@@ -1,0 +1,6 @@
+// This script tests a simple window rendering in Sola using the Air markup language.
+space Application
+ window Interface
+  log(Window created!)
+ end
+end
